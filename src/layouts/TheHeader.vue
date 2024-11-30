@@ -17,10 +17,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <router-link
+                to="/"
+                active-class="active"
+                class="nav-link"
+                aria-current="page"
+              >
+                Home
+              </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+              <router-link to="/about" active-class="active" class="nav-link">
+                About
+              </router-link>
             </li>
           </ul>
           <form class="d-flex" role="search">

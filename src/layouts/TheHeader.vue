@@ -31,24 +31,30 @@
                 About
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/posts" active-class="active" class="nav-link">
+                게시글
+              </router-link>
+            </li>
           </ul>
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
+          <div class="d-flex">
+            <button class="btn btn-outline-light" type="submit" @click="goPage">
+              글쓰기
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </nav>
   </header>
 </template>
 
-<script setup></script>
+<script setup>
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const goPage = () => {
+  router.push("/posts/create");
+};
+</script>
 
 <style lang="scss" scoped></style>

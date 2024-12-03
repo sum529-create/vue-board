@@ -6,6 +6,10 @@ const posts = [
   { id: 5, title: "제목5", content: "내용5", createdAt: "2024-05-01" },
 ];
 
-export default function getPosts() {
+export function getPosts() {
   return posts;
+}
+
+export function getPostById(id) {
+  return posts.map((e) => e.id === id);
 }

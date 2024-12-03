@@ -26,11 +26,30 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from "vue-router";
+import { getPostById } from "@/api/posts";
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+
+// props
+const props = defineProps({
+  id: String,
+});
 
 // data
 const router = useRouter();
-const route = useRoute();
+// const { id } = props;
+const form = ref({});
+
+// mounted
+onMounted(() => {
+  fetchPost();
+});
+
+// methods
+const fetchPost = () => {
+  const data = getPostById(props.id);
+  form.value = { ...data };
+};
 
 const goPage = (type) => {
   if (type) {
@@ -41,7 +60,7 @@ const goPage = (type) => {
     } else {
       router.push({
         name: "PostEdit",
-        params: { id: route.params.id },
+        params: { id: props.id },
       });
     }
   }

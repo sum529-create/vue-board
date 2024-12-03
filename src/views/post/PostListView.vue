@@ -12,14 +12,20 @@
         />
       </div>
     </div>
+    <hr class="my-4" />
+    <app-card>
+      <post-detail-view id="1" />
+    </app-card>
   </div>
 </template>
 
 <script setup>
-import getPosts from "@/api/posts";
+import { getPosts } from "@/api/posts";
 import PostItem from "@/components/posts/PostItem.vue";
+import PostDetailView from "./PostDetailView.vue";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import AppCard from "@/components/AppCard.vue";
 
 // data
 const posts = ref([]);

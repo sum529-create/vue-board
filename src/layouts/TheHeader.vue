@@ -36,6 +36,11 @@
                 게시글
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/nested" active-class="active" class="nav-link">
+                Nested
+              </router-link>
+            </li>
           </ul>
           <div class="d-flex">
             <button class="btn btn-outline-light" type="submit" @click="goPage">

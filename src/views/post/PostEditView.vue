@@ -51,10 +51,9 @@ const fetchPost = async () => {
     console.error("Failed to Fetch Post: ", error);
   }
 };
-const setForm = ({ title, content, createdAt }) => {
+const setForm = ({ title, content }) => {
   form.value.title = title;
   form.value.content = content;
-  form.value.createdAt = createdAt;
 };
 const edit = async () => {
   try {

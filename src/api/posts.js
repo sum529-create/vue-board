@@ -23,7 +23,9 @@ export function createPost(data) {
 export function updatePost(id, data) {
   const numId = parseToNumber(id);
   // PUT /posts/:id
-  return posts.put(`/${numId}`, data);
+  // return posts.put(`/${numId}`, data);
+  // JSON library에서 값을 지정하지 않으면 빈값으로 처리되는 오류처리 : patch
+  return posts.patch(`/${numId}`, data);
 }
 
 export function deletePost(id) {

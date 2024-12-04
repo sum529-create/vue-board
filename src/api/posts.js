@@ -10,11 +10,12 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/posts";
 
-function fetchData(url, method = "GET", data) {
+function fetchData(url, method = "GET", data, params) {
   return axios({
     url,
     method,
     data,
+    params,
   });
 }
 
@@ -22,9 +23,9 @@ function parseToNumber(id) {
   return isNaN(Number(id)) ? NaN : Number(id);
 }
 
-export function getPosts() {
-  // return axios.get("http://localhost:5000/posts");
-  return fetchData(API_URL);
+export function getPosts(params) {
+  // return axios.get("http://localhost:5000/posts", { params });
+  return fetchData(API_URL, "", "", params);
 }
 
 export function getPostById(id) {

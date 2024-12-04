@@ -2,26 +2,12 @@
   <div>
     <h2>게시글 등록</h2>
     <hr class="my-4" />
-    <form @submit.prevent="save">
-      <div class="mb-3">
-        <label for="title" class="form-label">제목</label>
-        <input
-          type="text"
-          v-model="formatPost.title"
-          class="form-control"
-          id="title"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="content" class="form-label">내용</label>
-        <textarea
-          v-model="formatPost.content"
-          class="form-control"
-          id="content"
-          rows="3"
-        ></textarea>
-      </div>
-      <div class="pt-4">
+    <post-form
+      @submit.prevent="save"
+      v-model:title="formatPost.title"
+      v-model:content="formatPost.content"
+    >
+      <template #actions>
         <button
           type="button"
           class="btn btn-outline-dark me-2"
@@ -30,8 +16,8 @@
           목록
         </button>
         <button class="btn btn-primary">저장</button>
-      </div>
-    </form>
+      </template>
+    </post-form>
   </div>
 </template>
 
@@ -39,6 +25,7 @@
 import { createPost } from "@/api/posts";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
+import PostForm from "@/components/posts/PostForm.vue";
 
 const emit = defineEmits(["newPost"]);
 

@@ -7,3 +7,6 @@ import App from "./App.vue";
 import router from "./router";
 
 createApp(App).use(router).mount("#app");
+
+// console.log("VITE_APP_API_URL", import.meta.env);
+// console.log("VITE_APP_API_URL", import.meta.env.VITE_APP_API_URL);

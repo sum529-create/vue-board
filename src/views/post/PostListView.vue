@@ -14,7 +14,7 @@
     </div>
     <hr class="my-4" />
     <app-card>
-      <post-detail-view id="1" />
+      <post-detail-view :id="1" />
     </app-card>
   </div>
 </template>
@@ -37,8 +37,15 @@ onMounted(() => {
 });
 
 // methods
-const fetchPosts = () => {
-  posts.value = [...getPosts()];
+const fetchPosts = async () => {
+  // posts.value = [...getPosts()];
+  try {
+    const res = await getPosts();
+    posts.value = [...res.data];
+    // ({ data: posts.value } = await getPosts());
+  } catch (error) {
+    console.error("Failed to fetch Data: ", error);
+  }
 };
 
 const goPage = (id) => {

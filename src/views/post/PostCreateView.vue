@@ -2,7 +2,7 @@
   <div>
     <h2>게시글 등록</h2>
     <hr class="my-4" />
-    <form @submit.prevent>
+    <form @submit.prevent="save">
       <div class="mb-3">
         <label for="title" class="form-label">제목</label>
         <input
@@ -29,15 +29,16 @@
         >
           목록
         </button>
-        <button @click="submitPost" class="btn btn-primary">저장</button>
+        <button class="btn btn-primary">저장</button>
       </div>
     </form>
   </div>
 </template>
 
 <script setup>
+import { createPost } from "@/api/posts";
 import { reactive } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 const emit = defineEmits(["newPost"]);
 
@@ -50,10 +51,16 @@ const formatPost = reactive({
   createdAt: today,
 });
 
-const submitPost = () => {
-  console.log(formatPost);
-
-  // emit("submit", { ...formatPost });
+const save = async () => {
+  try {
+    const data = {
+      ...formatPost,
+    };
+    await createPost(data);
+    router.push({
+      name: "PostList",
+    });
+  } catch (error) {}
 };
 
 const goListPage = () => {

@@ -16,6 +16,7 @@
             :content="item.content"
             :created-at="item.createdAt"
             @click="goPage(item.id)"
+            @modal="openModal(item)"
           />
         </template>
       </app-grid>
@@ -25,6 +26,14 @@
       :page-count="pageCount"
       @page="(page) => (params._page = page)"
     />
+    <Teleport to="#modal">
+      <post-modal
+        v-model="show"
+        :title="modalTitle"
+        :content="modalContent"
+        :createdAt="modalCreatedAt"
+      />
+    </Teleport>
     <template v-if="posts && posts.length > 0">
       <hr class="my-5" />
       <app-card>
@@ -41,9 +50,10 @@ import PostDetailView from "./PostDetailView.vue";
 import { computed, ref, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 import AppCard from "@/components/AppCard.vue";
-import AppPagination from "@/components/posts/AppPagination.vue";
+import AppPagination from "@/components/AppPagination.vue";
 import AppGrid from "@/components/AppGrid.vue";
 import PostFilter from "@/components/posts/PostFilter.vue";
+import PostModal from "@/components/posts/PostModal.vue";
 
 // data
 const posts = ref([]);
@@ -57,6 +67,12 @@ const params = ref({
   _limit: 3,
   title_like: "",
 });
+
+// data_modal
+const show = ref(false);
+const modalTitle = ref("");
+const modalContent = ref("");
+const modalCreatedAt = ref("");
 
 const totalCount = ref(0);
 const pageCount = computed(() =>
@@ -92,6 +108,14 @@ watchEffect(fetchPosts);
 // method_pagination
 const movePage = (page) => {
   params.value._page = page;
+};
+
+// medhod_modal
+const openModal = ({ title, content, createdAt }) => {
+  show.value = true;
+  modalTitle.value = title;
+  modalContent.value = content;
+  modalCreatedAt.value = createdAt;
 };
 </script>
 

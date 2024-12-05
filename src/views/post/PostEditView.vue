@@ -1,7 +1,10 @@
 <template>
-  <div>
+  <app-loading v-if="loading" />
+  <app-error v-else-if="error" :message="error.message" />
+  <div v-else>
     <h2>게시글 수정</h2>
     <hr class="my-4" />
+    <app-error v-if="editError" :message="editError.message" />
     <post-form
       @submit.prevent="edit"
       v-model:title="form.title"
@@ -15,7 +18,17 @@
         >
           취소
         </button>
-        <button @click="submitPost" class="btn btn-primary">수정</button>
+        <button class="btn btn-primary" :disabled="editLoading">
+          <template v-if="editLoading">
+            <span
+              class="spinner-grow spinner-grow-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            <span class="visually-hidden">Loading...</span>
+          </template>
+          <template v-else> 수정 </template>
+        </button>
       </template>
     </post-form>
     <!-- <app-alert :show="showAlert" :message="alertMessage" :type="alertType" /> -->
@@ -24,6 +37,8 @@
 
 <script setup>
 import { getPostById, updatePost } from "@/api/posts";
+import AppError from "@/components/app/AppError.vue";
+import AppLoading from "@/components/app/AppLoading.vue";
 import PostForm from "@/components/posts/PostForm.vue";
 import { useAlert } from "@/composables/alert";
 import { onMounted, ref } from "vue";
@@ -35,6 +50,10 @@ const { vAlert } = useAlert();
 const router = useRouter();
 const route = useRoute();
 const id = route.params.id;
+const loading = ref(false);
+const error = ref(null);
+const editLoading = ref(false);
+const editError = ref(null);
 
 const form = ref({
   title: null,
@@ -49,11 +68,15 @@ onMounted(() => {
 // methods
 const fetchPost = async () => {
   try {
+    loading.value = true;
     const { data } = await getPostById(id);
     setForm(data);
-  } catch (error) {
-    console.error("Failed to Fetch Post: ", error);
-    vAlert(error.message);
+  } catch (e) {
+    console.error("Failed to Fetch Post: ", e);
+    error.value = e;
+    vAlert(e.message);
+  } finally {
+    loading.value = false;
   }
 };
 const setForm = ({ title, content }) => {
@@ -62,12 +85,16 @@ const setForm = ({ title, content }) => {
 };
 const edit = async () => {
   try {
+    editLoading.value = true;
     await updatePost(id, { ...form.value });
     vAlert("수정이 완료되었습니다.", "success");
     router.push({ name: "PostDetail", params: { id } });
-  } catch (error) {
-    console.error("Failed to update post: ", error);
-    vAlert(error.message);
+  } catch (e) {
+    console.error("Failed to update post: ", e);
+    vAlert(e.message);
+    editError.value = e;
+  } finally {
+    editLoading.value = false;
   }
 };
 const goDetail = () => {

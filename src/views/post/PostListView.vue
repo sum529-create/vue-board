@@ -8,24 +8,28 @@
       v-model:limit="params._limit"
     />
     <hr class="my-4" />
-    <div class="row g-3">
-      <app-grid :items="posts" col-class="col-6">
-        <template v-slot="{ item }">
-          <post-item
-            :title="item.title"
-            :content="item.content"
-            :created-at="item.createdAt"
-            @click="goPage(item.id)"
-            @modal="openModal(item)"
-          />
-        </template>
-      </app-grid>
-    </div>
-    <app-pagination
-      :current-page="params._page"
-      :page-count="pageCount"
-      @page="(page) => (params._page = page)"
-    />
+    <app-loading v-if="loading" />
+    <app-error v-else-if="error" :message="error.message" />
+    <template v-else>
+      <div class="row g-3">
+        <app-grid :items="posts" col-class="col-6">
+          <template v-slot="{ item }">
+            <post-item
+              :title="item.title"
+              :content="item.content"
+              :created-at="item.createdAt"
+              @click="goPage(item.id)"
+              @modal="openModal(item)"
+            />
+          </template>
+        </app-grid>
+      </div>
+      <app-pagination
+        :current-page="params._page"
+        :page-count="pageCount"
+        @page="(page) => (params._page = page)"
+      />
+    </template>
     <Teleport to="#modal">
       <post-modal
         v-model="show"
@@ -51,6 +55,12 @@ import { computed, ref, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 import PostFilter from "@/components/posts/PostFilter.vue";
 import PostModal from "@/components/posts/PostModal.vue";
+import AppLoading from "@/components/app/AppLoading.vue";
+import AppError from "@/components/app/AppError.vue";
+
+// Error
+const error = ref(null);
+const loading = ref(false);
 
 // data
 const posts = ref([]);
@@ -80,12 +90,16 @@ const pageCount = computed(() =>
 const fetchPosts = async () => {
   // posts.value = [...getPosts()];
   try {
+    loading.value = true;
     const { data, headers } = await getPosts(params.value);
     posts.value = data;
     totalCount.value = headers["x-total-count"];
     // ({ data: posts.value } = await getPosts());
-  } catch (error) {
-    console.error("Failed to fetch Data: ", error);
+  } catch (e) {
+    console.error("Failed to fetch Data: ", e);
+    error.value = e;
+  } finally {
+    loading.value = false;
   }
 };
 

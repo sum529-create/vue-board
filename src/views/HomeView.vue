@@ -15,11 +15,11 @@ export default {
 </script> -->
 
 <script setup>
-import { inject } from "vue";
+// import { inject } from "vue";
 import { useRouter } from "vue-router";
 
-const person = inject("person");
-console.log(person.name);
+// const person = inject("person");
+// console.log(person.name);
 
 const router = useRouter();
 const goAboutPage = () => {

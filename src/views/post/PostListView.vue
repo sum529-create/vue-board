@@ -49,9 +49,6 @@ import PostItem from "@/components/posts/PostItem.vue";
 import PostDetailView from "./PostDetailView.vue";
 import { computed, ref, watchEffect } from "vue";
 import { useRouter } from "vue-router";
-import AppCard from "@/components/AppCard.vue";
-import AppPagination from "@/components/AppPagination.vue";
-import AppGrid from "@/components/AppGrid.vue";
 import PostFilter from "@/components/posts/PostFilter.vue";
 import PostModal from "@/components/posts/PostModal.vue";
 

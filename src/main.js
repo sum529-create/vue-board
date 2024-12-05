@@ -9,6 +9,7 @@ import router from "./router";
 // import objPlugins from "./plugins/obj";
 // import person from "./plugins/person";
 import globalComponents from "./plugins/global-components";
+import globalDirectives from "./plugins/global-directives";
 
 const app = createApp(App);
 app.use(router);
@@ -16,6 +17,7 @@ app.use(router);
 // app.use(objPlugins, { name: "coco" });
 // app.use(person, { name: "coco" });
 app.use(globalComponents);
+app.use(globalDirectives);
 app.mount("#app");
 
 // console.log("VITE_APP_API_URL", import.meta.env);

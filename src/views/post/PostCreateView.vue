@@ -29,19 +29,20 @@ import PostForm from "@/components/posts/PostForm.vue";
 
 const emit = defineEmits(["newPost"]);
 
-const today = new Date().toLocaleDateString("en-CA");
+// const today = new Date().toLocaleDateString("en-CA");
 const router = useRouter();
 
 const formatPost = reactive({
   title: "",
   content: "",
-  createdAt: today,
+  // createdAt: today,
 });
 
 const save = async () => {
   try {
     const data = {
       ...formatPost,
+      createdAt: Date.now(),
     };
     await createPost(data);
     router.push({

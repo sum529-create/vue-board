@@ -2,7 +2,10 @@
   <div>
     <h2>{{ form.title }}</h2>
     <p>{{ form.content }}</p>
-    <p class="text-muted">{{ form.createdAt }}</p>
+    <p class="text-muted">
+      {{ $dayjs(form.createdAt).format("YYYY. MM. DD HH:mm:ss") }}
+    </p>
+    <!-- <p class="text-muted">{{ form.createdAt }}</p> -->
     <hr class="my-4" />
     <div class="row g-2">
       <div class="col-auto">

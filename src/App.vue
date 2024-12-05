@@ -1,7 +1,7 @@
 <script setup>
 import TheHeader from "./layouts/TheHeader.vue";
 import TheView from "./layouts/TheView.vue";
-import { useAlert } from "@/composables/alert";
+import { useAlert } from "@/composables/useAlert";
 // alert
 const { alerts } = useAlert();
 </script>

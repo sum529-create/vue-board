@@ -40,7 +40,7 @@ import { getPostById, updatePost } from "@/api/posts";
 import AppError from "@/components/app/AppError.vue";
 import AppLoading from "@/components/app/AppLoading.vue";
 import PostForm from "@/components/posts/PostForm.vue";
-import { useAlert } from "@/composables/alert";
+import { useAlert } from "@/composables/useAlert";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 

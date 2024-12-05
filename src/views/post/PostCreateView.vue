@@ -36,7 +36,7 @@ import { createPost } from "@/api/posts";
 import { inject, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import PostForm from "@/components/posts/PostForm.vue";
-import { useAlert } from "@/composables/alert";
+import { useAlert } from "@/composables/useAlert";
 import AppError from "@/components/app/AppError.vue";
 
 const emit = defineEmits(["newPost"]);

@@ -49,6 +49,8 @@
 import { deletePost, getPostById } from "@/api/posts";
 import AppError from "@/components/app/AppError.vue";
 import AppLoading from "@/components/app/AppLoading.vue";
+import { useAlert } from "@/composables/useAlert";
+import { useAxios } from "@/composables/useAxios";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -60,47 +62,73 @@ const props = defineProps({
 // data
 const router = useRouter();
 const { id } = props;
-const form = ref({});
-const error = ref(null);
-const loading = ref(false);
-const removeError = ref(null);
-const removeLoading = ref(false);
+const { vAlert } = useAlert();
+// const removeError = ref(null);
+// const removeLoading = ref(false);
 
-// mounted
-onMounted(() => {
-  fetchPost();
-});
-
-// methods
-const fetchPost = async () => {
-  try {
-    loading.value = true;
-    const res = await getPostById(id);
-    form.value = { ...res.data };
-  } catch (e) {
-    error.value = e;
-    console.error("Failed to Fetch Post: ", e);
-  } finally {
-    loading.value = false;
-  }
-};
-
-const remove = async () => {
-  try {
-    removeLoading.value = true;
-    if (confirm("해당 포스트글을 삭제하시겠습니까?")) {
-      await deletePost(id);
+const { loading, error, data: form } = useAxios(`/posts/${props.id}`);
+const {
+  loading: removeLoading,
+  error: removeError,
+  execute,
+} = useAxios(
+  `/posts/${props.id}`,
+  { method: "delete" },
+  {
+    onSuccess: () => {
+      vAlert("삭제가 완료되었습니다.", "success");
       router.push({
         name: "PostList",
       });
-    }
-  } catch (e) {
-    console.error("Failed to Delete Post: ", e);
-    removeError.value = e;
-  } finally {
-    removeLoading.value = false;
+    },
+    onError: (e) => {
+      vAlert(e.message);
+    },
+    immediate: false,
+  }
+);
+
+// mounted
+// onMounted(() => {
+//   fetchPost();
+// });
+
+// methods
+// const fetchPost = async () => {
+//   try {
+//     loading.value = true;
+//     const res = await getPostById(id);
+//     form.value = { ...res.data };
+//   } catch (e) {
+//     error.value = e;
+//     console.error("Failed to Fetch Post: ", e);
+//   } finally {
+//     loading.value = false;
+//   }
+// };
+
+const remove = async () => {
+  if (confirm("해당 포스트글을 삭제하시겠습니까?")) {
+    execute();
   }
 };
+
+// const remove = async () => {
+//   try {
+//     removeLoading.value = true;
+//     if (confirm("해당 포스트글을 삭제하시겠습니까?")) {
+//       await deletePost(id);
+//       router.push({
+//         name: "PostList",
+//       });
+//     }
+//   } catch (e) {
+//     console.error("Failed to Delete Post: ", e);
+//     removeError.value = e;
+//   } finally {
+//     removeLoading.value = false;
+//   }
+// };
 
 const goPage = (type) => {
   if (type) {

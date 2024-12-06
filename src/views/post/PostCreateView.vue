@@ -38,6 +38,7 @@ import { useRouter } from "vue-router";
 import PostForm from "@/components/posts/PostForm.vue";
 import { useAlert } from "@/composables/useAlert";
 import AppError from "@/components/app/AppError.vue";
+import { useAxios } from "@/composables/useAxios";
 
 const emit = defineEmits(["newPost"]);
 
@@ -53,29 +54,55 @@ const formatPost = reactive({
   // createdAt: today,
 });
 
-const loading = ref(false);
-const error = ref(null);
+// const loading = ref(false);
+// const error = ref(null);
 
-const save = async () => {
-  try {
-    loading.value = true;
-    const data = {
-      ...formatPost,
-      createdAt: dayjs(Date.now()).format("YYYY. MM. DD. HH:mm:ss"),
-    };
-    await createPost(data);
-    router.push({
-      name: "PostList",
-    });
-    vAlert("게시글을 생성하였습니다.", "success");
-  } catch (e) {
-    vAlert("게시글 생성에 실패하였습니다.", "error");
-    console.error("Failed to Create Post: ", e);
-    error.value = e;
-  } finally {
-    loading.value = false;
-  }
+const data = {
+  ...formatPost,
+  createdAt: dayjs(Date.now()).format("YYYY. MM. DD. HH:mm:ss"),
 };
+const { loading, error, execute } = useAxios(
+  "/posts",
+  {
+    method: "post",
+  },
+  {
+    immediate: false,
+    onSuccess: () => {
+      router.push({
+        name: "PostList",
+      });
+      vAlert("게시글을 생성하였습니다.", "success");
+    },
+    onError: (err) => {
+      vAlert("게시글 생성에 실패하였습니다.", "error");
+    },
+  }
+);
+const save = async () => {
+  execute(data);
+};
+
+// const save = async () => {
+//   try {
+//     loading.value = true;
+//     const data = {
+//       ...formatPost,
+//       createdAt: dayjs(Date.now()).format("YYYY. MM. DD. HH:mm:ss"),
+//     };
+//     await createPost(data);
+//     router.push({
+//       name: "PostList",
+//     });
+//     vAlert("게시글을 생성하였습니다.", "success");
+//   } catch (e) {
+//     vAlert("게시글 생성에 실패하였습니다.", "error");
+//     console.error("Failed to Create Post: ", e);
+//     error.value = e;
+//   } finally {
+//     loading.value = false;
+//   }
+// };
 
 const goListPage = () => {
   router.push({

@@ -41,6 +41,7 @@ import AppError from "@/components/app/AppError.vue";
 import AppLoading from "@/components/app/AppLoading.vue";
 import PostForm from "@/components/posts/PostForm.vue";
 import { useAlert } from "@/composables/useAlert";
+import { useAxios } from "@/composables/useAxios";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
@@ -50,53 +51,78 @@ const { vAlert } = useAlert();
 const router = useRouter();
 const route = useRoute();
 const id = route.params.id;
-const loading = ref(false);
-const error = ref(null);
-const editLoading = ref(false);
-const editError = ref(null);
+// const editLoading = ref(false);
+// const editError = ref(null);
 
-const form = ref({
-  title: null,
-  content: null,
-});
+const { loading, error, data: form } = useAxios(`/posts/${id}`);
+
+const {
+  loading: editLoading,
+  error: editError,
+  execute,
+} = useAxios(
+  `/posts/${id}`,
+  {
+    method: "patch",
+  },
+  {
+    onSuccess: () => {
+      vAlert("수정이 완료되었습니다.", "success");
+      router.push({ name: "PostDetail", params: { id } });
+    },
+    onError: (e) => {
+      vAlert(e.message);
+    },
+    immediate: false,
+  }
+);
+
+const edit = async () => {
+  execute({ ...form.value });
+};
+
+// const form = ref({
+//   title: null,
+//   content: null,
+// });
 
 // mounted
-onMounted(() => {
-  fetchPost();
-});
+// onMounted(() => {
+//   fetchPost();
+// });
 
 // methods
-const fetchPost = async () => {
-  try {
-    loading.value = true;
-    const { data } = await getPostById(id);
-    setForm(data);
-  } catch (e) {
-    console.error("Failed to Fetch Post: ", e);
-    error.value = e;
-    vAlert(e.message);
-  } finally {
-    loading.value = false;
-  }
-};
-const setForm = ({ title, content }) => {
-  form.value.title = title;
-  form.value.content = content;
-};
-const edit = async () => {
-  try {
-    editLoading.value = true;
-    await updatePost(id, { ...form.value });
-    vAlert("수정이 완료되었습니다.", "success");
-    router.push({ name: "PostDetail", params: { id } });
-  } catch (e) {
-    console.error("Failed to update post: ", e);
-    vAlert(e.message);
-    editError.value = e;
-  } finally {
-    editLoading.value = false;
-  }
-};
+// const fetchPost = async () => {
+//   try {
+//     loading.value = true;
+//     const { data } = await getPostById(id);
+//     setForm(data);
+//   } catch (e) {
+//     console.error("Failed to Fetch Post: ", e);
+//     error.value = e;
+//     vAlert(e.message);
+//   } finally {
+//     loading.value = false;
+//   }
+// };
+// const setForm = ({ title, content }) => {
+//   form.value.title = title;
+//   form.value.content = content;
+// };
+// const edit = async () => {
+//   try {
+//     editLoading.value = true;
+//     await updatePost(id, { ...form.value });
+//     vAlert("수정이 완료되었습니다.", "success");
+//     router.push({ name: "PostDetail", params: { id } });
+//   } catch (e) {
+//     console.error("Failed to update post: ", e);
+//     vAlert(e.message);
+//     editError.value = e;
+//   } finally {
+//     editLoading.value = false;
+//   }
+// };
 const goDetail = () => {
   router.push({
     name: "PostDetail",

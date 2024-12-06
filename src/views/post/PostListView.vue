@@ -57,13 +57,14 @@ import PostFilter from "@/components/posts/PostFilter.vue";
 import PostModal from "@/components/posts/PostModal.vue";
 import AppLoading from "@/components/app/AppLoading.vue";
 import AppError from "@/components/app/AppError.vue";
+import { useAxios } from "@/composables/useAxios";
 
 // Error
-const error = ref(null);
-const loading = ref(false);
+// const error = ref(null);
+// const loading = ref(false);
 
 // data
-const posts = ref([]);
+// const posts = ref([]);
 const router = useRouter();
 
 // data_pagination
@@ -81,27 +82,34 @@ const modalTitle = ref("");
 const modalContent = ref("");
 const modalCreatedAt = ref("");
 
-const totalCount = ref(0);
+const totalCount = computed(() => response.value.headers["x-total-count"]);
 const pageCount = computed(() =>
   Math.ceil(totalCount.value / params.value._limit)
 );
 
+const {
+  response,
+  loading,
+  error,
+  data: posts,
+} = useAxios("/posts", { method: "get", params });
+
 // methods
-const fetchPosts = async () => {
-  // posts.value = [...getPosts()];
-  try {
-    loading.value = true;
-    const { data, headers } = await getPosts(params.value);
-    posts.value = data;
-    totalCount.value = headers["x-total-count"];
-    // ({ data: posts.value } = await getPosts());
-  } catch (e) {
-    console.error("Failed to fetch Data: ", e);
-    error.value = e;
-  } finally {
-    loading.value = false;
-  }
-};
+// const fetchPosts = async () => {
+//   // posts.value = [...getPosts()];
+//   try {
+//     loading.value = true;
+//     const { data, headers } = await getPosts(params.value);
+//     posts.value = data;
+//     totalCount.value = headers["x-total-count"];
+//     // ({ data: posts.value } = await getPosts());
+//   } catch (e) {
+//     console.error("Failed to fetch Data: ", e);
+//     error.value = e;
+//   } finally {
+//     loading.value = false;
+//   }
+// };
 
 const goPage = (id) => {
   // router.push(`/posts/${id}`);
@@ -114,7 +122,7 @@ const goPage = (id) => {
 };
 
 // watch
-watchEffect(fetchPosts);
+// watchEffect(fetchPosts);
 
 // method_pagination
 const movePage = (page) => {

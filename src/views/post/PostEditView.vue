@@ -54,14 +54,15 @@ const id = route.params.id;
 // const editLoading = ref(false);
 // const editError = ref(null);
 
-const { loading, error, data: form } = useAxios(`/posts/${id}`);
+const url = computed(() => `/posts/${id}`);
+const { loading, error, data: form } = useAxios(url);
 
 const {
   loading: editLoading,
   error: editError,
   execute,
 } = useAxios(
-  `/posts/${id}`,
+  url,
   {
     method: "patch",
   },

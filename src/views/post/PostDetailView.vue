@@ -51,7 +51,7 @@ import AppError from "@/components/app/AppError.vue";
 import AppLoading from "@/components/app/AppLoading.vue";
 import { useAlert } from "@/composables/useAlert";
 import { useAxios } from "@/composables/useAxios";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 // props
@@ -65,14 +65,16 @@ const { id } = props;
 const { vAlert } = useAlert();
 // const removeError = ref(null);
 // const removeLoading = ref(false);
+// url -> 반응형 객체로 변환
+const url = computed(() => `/posts/${props.id}`);
 
-const { loading, error, data: form } = useAxios(`/posts/${props.id}`);
+const { loading, error, data: form } = useAxios(url);
 const {
   loading: removeLoading,
   error: removeError,
   execute,
 } = useAxios(
-  `/posts/${props.id}`,
+  url,
   { method: "delete" },
   {
     onSuccess: () => {

@@ -20,6 +20,7 @@
               :created-at="item.createdAt"
               @click="goPage(item.id)"
               @modal="openModal(item)"
+              @preview="selectPreview(item.id)"
             />
           </template>
         </app-grid>
@@ -38,10 +39,10 @@
         :createdAt="modalCreatedAt"
       />
     </Teleport>
-    <template v-if="posts && posts.length > 0">
+    <template v-if="previewId">
       <hr class="my-5" />
       <app-card>
-        <post-detail-view :id="posts[0].id" />
+        <post-detail-view :id="previewId" />
       </app-card>
     </template>
   </div>
@@ -81,6 +82,9 @@ const show = ref(false);
 const modalTitle = ref("");
 const modalContent = ref("");
 const modalCreatedAt = ref("");
+
+const previewId = ref(null);
+const selectPreview = (id) => (previewId.value = id);
 
 const totalCount = computed(() => response.value.headers["x-total-count"]);
 const pageCount = computed(() =>

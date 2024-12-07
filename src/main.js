@@ -11,6 +11,7 @@ import router from "./router";
 import globalComponents from "./plugins/global-components";
 import globalDirectives from "./plugins/global-directives";
 import dayjs from "./plugins/dayjs";
+import { createPinia } from "pinia";
 
 const app = createApp(App);
 app.use(router);
@@ -20,6 +21,7 @@ app.use(router);
 app.use(globalComponents);
 app.use(globalDirectives);
 app.use(dayjs);
+app.use(createPinia());
 app.mount("#app");
 
 // console.log("VITE_APP_API_URL", import.meta.env);

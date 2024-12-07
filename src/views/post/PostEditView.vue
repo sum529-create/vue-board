@@ -42,7 +42,7 @@ import AppLoading from "@/components/app/AppLoading.vue";
 import PostForm from "@/components/posts/PostForm.vue";
 import { useAlert } from "@/composables/useAlert";
 import { useAxios } from "@/composables/useAxios";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 // alert

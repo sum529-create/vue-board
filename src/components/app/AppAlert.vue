@@ -20,15 +20,14 @@
 </template>
 
 <script setup>
-import { useAlertStore } from "@/stores/alert";
-import { storeToRefs } from "pinia";
+import { useAlert } from "@/composables/useAlert";
 
 // import { computed } from "vue";
 
 // defineProps({
 //   items: Array,
 // });
-const { alerts } = storeToRefs(useAlertStore);
+const { alerts } = useAlert();
 
 const typeStyle = (type) =>
   type === "error" ? "alert-danger" : "alert-primary";

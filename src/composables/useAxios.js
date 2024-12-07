@@ -53,7 +53,7 @@ export const useAxios = (url, config = {}, options = {}) => {
   };
 
   if (isRef(params) || isRef(url)) {
-    watchEffect(execute);
+    if (immediate) watchEffect(execute);
   } else {
     // 즉시 실행
     if (immediate) execute();

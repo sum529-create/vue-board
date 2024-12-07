@@ -7,7 +7,7 @@
   <div class="app-alert">
     <TransitionGroup name="slide">
       <div
-        v-for="({ message, type }, index) in items"
+        v-for="({ message, type }, index) in alerts"
         :key="index"
         class="alert"
         :class="typeStyle(type)"
@@ -20,11 +20,15 @@
 </template>
 
 <script setup>
+import { useAlertStore } from "@/stores/alert";
+import { storeToRefs } from "pinia";
+
 // import { computed } from "vue";
 
-defineProps({
-  items: Array,
-});
+// defineProps({
+//   items: Array,
+// });
+const { alerts } = storeToRefs(useAlertStore);
 
 const typeStyle = (type) =>
   type === "error" ? "alert-danger" : "alert-primary";

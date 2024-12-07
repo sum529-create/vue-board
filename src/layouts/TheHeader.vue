@@ -41,6 +41,11 @@
                 Nested
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/my" active-class="active" class="nav-link">
+                myPage
+              </router-link>
+            </li>
           </ul>
           <div class="d-flex">
             <button class="btn btn-outline-light" type="submit" @click="goPage">

@@ -17,7 +17,6 @@
       <button type="button" class="btn btn-secondary" @click="closeModal">
         Close
       </button>
-      <button type="button" class="btn btn-primary">Save changes</button>
     </template>
   </app-modal>
 </template>

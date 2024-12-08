@@ -2,7 +2,7 @@
   <header>
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Sumin</a>
+        <router-link class="navbar-brand" to="/">Sumin</router-link>
         <button
           class="navbar-toggler"
           type="button"

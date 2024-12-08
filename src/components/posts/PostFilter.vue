@@ -4,7 +4,7 @@
       <div class="col">
         <input
           :value="title"
-          @input="$emit('update:title', $event.target.value)"
+          @input="changeTitle"
           type="text"
           class="form-control"
           placeholder="제목으로 입력해주세요."
@@ -27,7 +27,7 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   title: {
     type: String,
   },
@@ -35,7 +35,12 @@ defineProps({
     type: Number,
   },
 });
-defineEmits(["update:title", "update:limit"]);
+const emit = defineEmits(["update:title", "update:limit"]);
+const changeTitle = (event) => {
+  setTimeout(() => {
+    emit("update:title", event.target.value);
+  }, 500);
+};
 </script>
 
 <style lang="scss" scoped></style>

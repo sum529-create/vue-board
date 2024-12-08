@@ -5,14 +5,18 @@
     <post-filter
       @submit.prevent
       v-model:title="params.title_like"
-      v-model:limit="params._limit"
+      :limit="params._limit"
+      @update:limit="changeLimit"
     />
     <hr class="my-4" />
     <app-loading v-if="loading" />
     <app-error v-else-if="error" :message="error.message" />
+    <template v-else-if="!isExist">
+      <p class="text-center py-5 text-muted">No Results</p>
+    </template>
     <template v-else>
       <div class="row g-3">
-        <app-grid :items="posts" col-class="col-6">
+        <app-grid :items="posts" col-class="col-6 col-sm-6 col-md-4 col-lg-3">
           <template v-slot="{ item }">
             <post-item
               :title="item.title"
@@ -90,6 +94,13 @@ const totalCount = computed(() => response.value.headers["x-total-count"]);
 const pageCount = computed(() =>
   Math.ceil(totalCount.value / params.value._limit)
 );
+
+const isExist = computed(() => posts.value && posts.value.length > 0);
+
+const changeLimit = (value) => {
+  params.value._limit = value;
+  params.value._page = 1;
+};
 
 const {
   response,
